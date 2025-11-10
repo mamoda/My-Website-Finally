@@ -198,7 +198,7 @@ function App() {
             </div>
             <div>
               <h1 className="text-xl font-bold">المُعَلِّم</h1>
-              <p className="text-green-200 text-sm">نظام إدارة العملية التعليمية</p>
+              <p className="text-green-200 text-sm">نظام إدارة المُعَلِّمين </p>
             </div>
           </div>
         </div>
