@@ -197,8 +197,8 @@ function App() {
               <BookOpen className="h-8 w-8" />
             </div>
             <div>
-              <h1 className="text-xl font-bold">معلم العربية</h1>
-              <p className="text-green-200 text-sm">Arabic Teacher Pro</p>
+              <h1 className="text-xl font-bold">المُعَلِّم</h1>
+              <p className="text-green-200 text-sm">نظام إدارة العملية التعليمية</p>
             </div>
           </div>
         </div>

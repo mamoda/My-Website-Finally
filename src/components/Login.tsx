@@ -56,13 +56,13 @@ const Login: React.FC<LoginProps> = ({ onLogin, onStudentLogin }) => {
               <BookOpen className="h-8 w-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-gray-900">
-              {isStudentLogin ? 'بوابة الطالب' : 'معلم العربية'}
+              {isStudentLogin ? 'بوابة الطالب' : ' المُعَلِّم'}
             </h1>
             <p className="text-gray-600 mt-1">
               {isStudentLogin ? 'Student Portal' : 'Arabic Teacher Pro'}
             </p>
             <p className="text-sm text-gray-500 mt-2">
-              {isStudentLogin ? 'بوابة الطلاب لمتابعة الدروس والواجبات' : 'نظام إدارة تعليم اللغة العربية'}
+              {isStudentLogin ? 'بوابة الطلاب لمتابعة الدروس والواجبات' : 'نظام إدارة العملية التعليمية  '}
             </p>
           </div>
 
@@ -169,7 +169,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onStudentLogin }) => {
         {/* Footer */}
         <div className="text-center mt-8">
           <p className="text-sm text-gray-500">
-            نظام إدارة تعليم اللغة العربية للمعلمين في المملكة العربية السعودية
+            نظام إدارة العملية التعليمية للمعلمين في المملكة العربية السعودية
           </p>
         </div>
       </div>
