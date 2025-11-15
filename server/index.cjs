@@ -121,6 +121,19 @@ db.serialize(() => {
         [adminEmail, adminPassword, 'Arabic Teacher']);
     }
   });
+
+  // Create default demo student if none exist
+  const demoStudentEmail = 'student@example.com';
+  db.get('SELECT id FROM students WHERE email = ?', [demoStudentEmail], (err, row) => {
+    if (err) {
+      console.error('Error checking demo student:', err);
+    } else if (!row) {
+      db.run('INSERT INTO students (name, email, phone, level, status) VALUES (?, ?, ?, ?, ?)',
+        ['Demo Student', demoStudentEmail, '', 'beginner', 'active'], function(err) {
+          if (err) console.error('Failed to insert demo student:', err);
+        });
+    }
+  });
 });
 
 // Middleware to verify JWT token
@@ -173,6 +186,7 @@ app.post('/api/student/login', (req, res) => {
 
   db.get('SELECT * FROM students WHERE email = ? AND status = "active"', [email], (err, student) => {
     if (err) {
+      console.error('DB error in /api/student/login:', err);
       return res.status(500).json({ error: 'Database error' });
     }
 
@@ -474,22 +488,34 @@ app.get('/api/dashboard/stats', authenticateToken, (req, res) => {
   
   // Count total students
   db.get('SELECT COUNT(*) as total FROM students', (err, result) => {
-    if (err) return res.status(500).json({ error: 'Database error' });
+    if (err) {
+      console.error('DB error in /api/dashboard/stats (total students):', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
     stats.totalStudents = result.total;
     
     // Count active students
     db.get('SELECT COUNT(*) as active FROM students WHERE status = "active"', (err, result) => {
-      if (err) return res.status(500).json({ error: 'Database error' });
+      if (err) {
+        console.error('DB error in /api/dashboard/stats (active students):', err);
+        return res.status(500).json({ error: 'Database error' });
+      }
       stats.activeStudents = result.active;
       
       // Count total lessons
       db.get('SELECT COUNT(*) as total FROM lessons', (err, result) => {
-        if (err) return res.status(500).json({ error: 'Database error' });
+        if (err) {
+          console.error('DB error in /api/dashboard/stats (lessons):', err);
+          return res.status(500).json({ error: 'Database error' });
+        }
         stats.totalLessons = result.total;
         
         // Count pending assignments
         db.get('SELECT COUNT(*) as pending FROM assignments WHERE status = "pending"', (err, result) => {
-          if (err) return res.status(500).json({ error: 'Database error' });
+          if (err) {
+            console.error('DB error in /api/dashboard/stats (pending assignments):', err);
+            return res.status(500).json({ error: 'Database error' });
+          }
           stats.pendingAssignments = result.pending;
           
           res.json(stats);
