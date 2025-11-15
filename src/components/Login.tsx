@@ -3,8 +3,27 @@ import { BookOpen, User, Lock, AlertCircle } from 'lucide-react';
 import { authService } from '../services/authService';
 
 interface LoginProps {
-  onLogin: (user: any) => void;
-  onStudentLogin: (student: any) => void;
+  onLogin: (user: User | null) => void;
+  onStudentLogin: (student: Student | null) => void;
+}
+
+interface User {
+  id: number;
+  name?: string;
+  email?: string;
+  phone?: string;
+  role?: string;
+}
+
+interface Student {
+  id: number;
+  name?: string;
+  email?: string;
+  phone?: string;
+  level?: string;
+  enrollment_date?: string;
+  status?: string;
+  notes?: string;
 }
 
 const Login: React.FC<LoginProps> = ({ onLogin, onStudentLogin }) => {
@@ -27,7 +46,8 @@ const Login: React.FC<LoginProps> = ({ onLogin, onStudentLogin }) => {
         const user = await authService.login(email, password);
         onLogin(user);
       }
-    } catch (err) {
+    } catch (error) {
+      console.error(error);
       setError('بيانات الدخول غير صحيحة');
     } finally {
       setLoading(false);
