@@ -484,44 +484,58 @@ app.post('/api/resources', authenticateToken, upload.single('file'), (req, res) 
 
 // Dashboard statistics
 app.get('/api/dashboard/stats', authenticateToken, (req, res) => {
-  const stats = {};
+  const stats = {
+    totalStudents: 0,
+    activeStudents: 0,
+    totalLessons: 0,
+    pendingAssignments: 0
+  };
+  
+  let completed = 0;
+  const total = 4;
   
   // Count total students
-  db.get('SELECT COUNT(*) as total FROM students', (err, result) => {
+  db.all('SELECT id FROM students', (err, rows) => {
     if (err) {
       console.error('DB error in /api/dashboard/stats (total students):', err);
-      return res.status(500).json({ error: 'Database error' });
+    } else {
+      stats.totalStudents = rows ? rows.length : 0;
     }
-    stats.totalStudents = result.total;
-    
-    // Count active students
-    db.get('SELECT COUNT(*) as active FROM students WHERE status = "active"', (err, result) => {
-      if (err) {
-        console.error('DB error in /api/dashboard/stats (active students):', err);
-        return res.status(500).json({ error: 'Database error' });
-      }
-      stats.activeStudents = result.active;
-      
-      // Count total lessons
-      db.get('SELECT COUNT(*) as total FROM lessons', (err, result) => {
-        if (err) {
-          console.error('DB error in /api/dashboard/stats (lessons):', err);
-          return res.status(500).json({ error: 'Database error' });
-        }
-        stats.totalLessons = result.total;
-        
-        // Count pending assignments
-        db.get('SELECT COUNT(*) as pending FROM assignments WHERE status = "pending"', (err, result) => {
-          if (err) {
-            console.error('DB error in /api/dashboard/stats (pending assignments):', err);
-            return res.status(500).json({ error: 'Database error' });
-          }
-          stats.pendingAssignments = result.pending;
-          
-          res.json(stats);
-        });
-      });
-    });
+    completed++;
+    if (completed === total) res.json(stats);
+  });
+  
+  // Count active students
+  db.all('SELECT id FROM students WHERE status = ?', ['active'], (err, rows) => {
+    if (err) {
+      console.error('DB error in /api/dashboard/stats (active students):', err);
+    } else {
+      stats.activeStudents = rows ? rows.length : 0;
+    }
+    completed++;
+    if (completed === total) res.json(stats);
+  });
+  
+  // Count total lessons
+  db.all('SELECT id FROM lessons', (err, rows) => {
+    if (err) {
+      console.error('DB error in /api/dashboard/stats (lessons):', err);
+    } else {
+      stats.totalLessons = rows ? rows.length : 0;
+    }
+    completed++;
+    if (completed === total) res.json(stats);
+  });
+  
+  // Count pending assignments
+  db.all('SELECT id FROM assignments WHERE status = ?', ['pending'], (err, rows) => {
+    if (err) {
+      console.error('DB error in /api/dashboard/stats (pending assignments):', err);
+    } else {
+      stats.pendingAssignments = rows ? rows.length : 0;
+    }
+    completed++;
+    if (completed === total) res.json(stats);
   });
 });
 

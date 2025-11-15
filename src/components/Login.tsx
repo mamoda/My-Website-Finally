@@ -173,23 +173,12 @@ const Login: React.FC<LoginProps> = ({ onLogin, onStudentLogin }) => {
           </form>
 
           {/* Demo Credentials */}
-          <div className={`mt-8 p-4 ${isStudentLogin ? 'bg-blue-50 border-blue-200' : 'bg-green-50 border-green-200'} border rounded-lg`}>
-            <p className={`text-sm ${isStudentLogin ? 'text-blue-800' : 'text-green-800'} font-medium mb-2`} dir="rtl">
-              {isStudentLogin ? 'بيانات طالب تجريبية:' : 'بيانات معلم تجريبية:'}
-            </p>
-            <p className={`text-xs ${isStudentLogin ? 'text-blue-700' : 'text-green-700'}`} dir="ltr">
-              Email: {isStudentLogin ? 'student@example.com' : 'admin@arabicteacher.com'}
-            </p>
-            <p className={`text-xs ${isStudentLogin ? 'text-blue-700' : 'text-green-700'}`} dir="ltr">
-              Password: {isStudentLogin ? 'student123' : 'admin123'}
-            </p>
-          </div>
         </div>
 
         {/* Footer */}
         <div className="text-center mt-8">
           <p className="text-sm text-gray-500">
-            نظام إدارة العملية التعليمية للمعلمين في المملكة العربية السعودية
+            نظام إدارة العملية التعليمية للمعلمين في جمهورية مصر العربية والمملكة العربية السعودية
           </p>
         </div>
       </div>
