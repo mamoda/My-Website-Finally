@@ -1,0 +1,32 @@
+# Render manifest for both backend (Web Service) and frontend (Static Site)
+# Place at repository root and push to GitHub — Render will pick it up automatically.
+
+services:
+  - type: web
+    name: arabic-teacher-backend
+    env: node
+    plan: free
+    # Root directory is the folder that contains server files (server/index.cjs)
+    root: server
+    buildCommand: "npm install"
+    startCommand: "node index.cjs"
+    disk:
+      mountPath: /data
+      sizeGb: 1
+    envVars:
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DB_PATH
+        value: /data/arabic_teacher.db
+      - key: UPLOADS_DIR
+        value: /data/uploads
+
+  - type: static
+    name: arabic-teacher-frontend
+    plan: free
+    root: .
+    buildCommand: "npm ci && npm run build"
+    publishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: "https://<your-backend-service>.onrender.com/api"
