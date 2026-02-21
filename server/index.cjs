@@ -13,10 +13,17 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-jwt-secret-key';
 const DB_PATH = process.env.DB_PATH || path.join(__dirname, 'arabic_teacher.db');
 const UPLOADS_DIR = process.env.UPLOADS_DIR || path.join(__dirname, 'uploads');
 
+
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
+
+
+app.get('/', (req, res) => {
+    res.sendFile('kandsdp');
+});
+
 
 // Ensure uploads directory exists
 if (!fs.existsSync(UPLOADS_DIR)) {
@@ -540,6 +547,7 @@ app.get('/api/dashboard/stats', authenticateToken, (req, res) => {
     if (completed === total) res.json(stats);
   });
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
